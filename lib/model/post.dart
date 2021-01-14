@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 
 class Post {
   String title;
-  List<String> phrase;
-  final DateTime date;
-
+  dynamic phrases = List<String>();
+//  Map<int, List<String>> sub_posts;
   Post({
-    @required this.date,
+    @required this.title,
+    @required this.phrases,
+//    @required this.sub_posts,
   });
-
 }

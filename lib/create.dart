@@ -8,6 +8,10 @@ import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import 'services/database.dart';
+import 'model/user.dart';
+import 'package:provider/provider.dart';
+
 
 
 
@@ -29,6 +33,7 @@ class _CreateBlogState extends State<CreateBlog> {
   String lastError = "";
   String lastStatus = "";
   String _currentLocaleId = "";
+  List<String> ph = [];
   final String intro_disp_msg = "What do you want me to do?";
   List<LocaleName> _localeNames = [];
   final TextEditingController eCtrl = new TextEditingController();
@@ -201,6 +206,10 @@ class _CreateBlogState extends State<CreateBlog> {
     setState(() {
       level = 0.0;
     });
+    var myLast = lastWords;
+    User user = Provider.of<User>(context);
+    ph.add(myLast);
+    DatabaseService(uid: user.uid).updateUserPostData(ph);
   }
 
   void cancelListening() {
@@ -216,8 +225,7 @@ class _CreateBlogState extends State<CreateBlog> {
       lastWords = '${result.recognizedWords}';
       }
     );
-    myList.add(lastWords);
-    widget?._callback();
+
 //    setState(() {
 //      lastWords = "${result.recognizedWords} - ${result.finalResult}";
 //    });
