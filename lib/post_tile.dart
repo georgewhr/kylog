@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'model/post.dart';
+import 'screens/single_post.dart';
 
 class PostTile extends StatelessWidget {
 
@@ -17,6 +16,12 @@ class PostTile extends StatelessWidget {
         child: ListTile(
           title: Text(post.title),
           subtitle: Text(post.phrases.toString()),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SinglePost(post)),
+            );
+          },
         ),
       ),
     );
