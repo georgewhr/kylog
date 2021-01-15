@@ -33,8 +33,8 @@ class _CreateBlogState extends State<CreateBlog> {
   String lastError = "";
   String lastStatus = "";
   String _currentLocaleId = "";
-  List<String> ph = [];
-  final String intro_disp_msg = "What do you want me to do?";
+
+  final String intro_disp_msg = "What do you want to log?";
   List<LocaleName> _localeNames = [];
   final TextEditingController eCtrl = new TextEditingController();
   final SpeechToText speech = SpeechToText();
@@ -44,7 +44,7 @@ class _CreateBlogState extends State<CreateBlog> {
   void initState() {
     if (!_hasSpeech) {
       initSpeechState().then((value) {
-        print('Speech  initialization complete');
+        print('Speech initialization complete');
       });
     }
     lastWords = intro_disp_msg;
@@ -87,54 +87,69 @@ class _CreateBlogState extends State<CreateBlog> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: new Column(
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body:
+      Column(children: [
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'Recognized Words',
+                  style: TextStyle(fontSize: 22.0),
+                ),
+              ),
+              Expanded(
+                child: Stack(
                   children: <Widget>[
                     Container(
-                      color: Theme.of(context).selectedRowColor,
+//                      color: Theme.of(context).selectedRowColor,
+                      color: Colors.yellow,
                       child: Center(
                         child: Text(
                           lastWords,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14.0, color: Colors.green
+                            fontSize: 14.0,
+                            color: Colors.black54
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-//          new TextField(
-//            controller: eCtrl,
-//            onSubmitted: (text) {
-//              var utc_time = DateTime.now().millisecondsSinceEpoch;
-////              day_time_key = utc_time - (utc_time % (86400 * 1000));
-////              myMap[day_time_key].add(text);
-//              myList.add(text);
-//              eCtrl.clear();
-//              setState(() {});
-//              widget?._callback();
-//            },
+        ),
+      ]),
+//      new Column(
+//        children: <Widget>[
+//          Container(
+//            child: Column(
+//              children: <Widget>[
+//                Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                  children: <Widget>[
+//                    Container(
+//                      color: Theme.of(context).selectedRowColor,
+//                      child: Center(
+//                        child: Text(
+//                          lastWords,
+//                          textAlign: TextAlign.center,
+//                          style: TextStyle(
+//                            fontSize: 14.0, color: Colors.green
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ],
+//            ),
 //          ),
-//          new Expanded(
-//              child: new ListView.builder
-//                (
-//                  itemCount: myList.length,
-//                  itemBuilder: (BuildContext ctxt, int Index) {
-//                    return new Text(myList[Index]);
-//                  }
-//              )
-//          )
-        ],
-      ),
+//        ],
+//      ),
       floatingActionButton: Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child:Row(
@@ -145,15 +160,16 @@ class _CreateBlogState extends State<CreateBlog> {
               child: Text('Talk',
                   style: _talkPressed
                       ? TextStyle(
-                      fontSize: 30.0, color: Colors.white24)
+                      fontSize: 30.0, color: Colors.black26)
                       : TextStyle(
-                      fontSize: 30.0, color: Colors.white)),
+                      fontSize: 30.0, color: Colors.black)),
               onPressed: onTalkButtonPress
           ),
           FlatButton(
+            padding: EdgeInsets.only(bottom: 30.0),
             child: Text('Stop',
               style: TextStyle(
-                  fontSize: 30.0, color: Colors.white),
+                  fontSize: 30.0, color: Colors.black),
             ),
             onPressed: speech.isListening ? stopListening : null,
           ),
@@ -206,10 +222,9 @@ class _CreateBlogState extends State<CreateBlog> {
     setState(() {
       level = 0.0;
     });
-    var myLast = lastWords;
+    String myLast = lastWords;
     User user = Provider.of<User>(context);
-    ph.add(myLast);
-    DatabaseService(uid: user.uid).updateUserPostData(ph);
+    DatabaseService(uid: user.uid).updateUserPostData(myLast);
   }
 
   void cancelListening() {
